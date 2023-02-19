@@ -1,12 +1,11 @@
 server:
   port: 9999
 spring:
-  application:
-    name: config-microservice
   cloud:
     config:
       server:
         git:
+          default-label: development
           uri: https://github.com/KenanAljaber/KrugerStar-Lab
           search-paths: config-files
           
