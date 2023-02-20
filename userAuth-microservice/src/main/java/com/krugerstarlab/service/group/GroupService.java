@@ -17,7 +17,7 @@ public interface GroupService {
 	public List<Group> getAllGroups();
 	
 	// Update an existing group
-	public Group updateGroup(Group group);
+	public Group updateGroup(Long id,Group group);
 	
 	// Delete a group by ID
 	public void deleteGroupById(Long id);

@@ -1,5 +1,6 @@
 package com.krugerstarlab.service.group;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,17 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public Group updateGroup(Group group) {
-		return groupRepository.save(group);
+	public Group updateGroup(Long id,Group group) {
+		Group existingGroup=this.getGroupById(id);
+		if(existingGroup==null) {
+			return null;
+		}
+		existingGroup.setName(group.getName());
+		List<Member> newMembers=new ArrayList<>();
+		group.getMembers().forEach(member->newMembers.add(member));
+		existingGroup.setMembers(newMembers);
+		
+		return groupRepository.save(existingGroup);
 	}
 
 	@Override

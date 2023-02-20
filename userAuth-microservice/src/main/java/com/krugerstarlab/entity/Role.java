@@ -1,6 +1,6 @@
 package com.krugerstarlab.entity;
 
-public enum Role {
+public enum Role  {
 	
 	ROLE_LEADER,
     ROLE_BACKEND_DEV,

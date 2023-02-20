@@ -2,20 +2,32 @@ package com.krugerstarlab.service.member;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.krugerstarlab.dto.LoginRequest;
+import com.krugerstarlab.dto.LoginResponse;
 import com.krugerstarlab.entity.Member;
+import com.krugerstarlab.entity.security_model.SecurityUser;
 import com.krugerstarlab.repository.MemberRepository;
-
-import jakarta.persistence.EntityNotFoundException;
+import com.krugerstarlab.security.JWTStore;
 
 @Service
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    
 
-    public MemberServiceImpl(MemberRepository memberRepository) {
+    private PasswordEncoder  passwordEncoder;
+    
+    
+
+    public MemberServiceImpl(MemberRepository memberRepository,PasswordEncoder  passwordEncoder) {
         this.memberRepository = memberRepository;
+        this.passwordEncoder=passwordEncoder;
     }
 
     @Override
@@ -31,6 +43,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member createMember(Member member) {
+    	member.setPassword(passwordEncoder.encode(member.getPassword()));
         return memberRepository.save(member);
     }
 
@@ -59,6 +72,31 @@ public class MemberServiceImpl implements MemberService {
 	public Member getMemberByEmail(String email) {
 		 return memberRepository.findByEmail(email)
 	                .orElse(null);
+	}
+
+	@Override
+	public LoginResponse login(SecurityUser user,LoginRequest request) {
+		
+		
+		if(passwordEncoder.matches(request.getPassword(),user.getPassword())) {
+		Member member=getMemberByEmail(user.getEmail());
+		return LoginResponse.builder().id(member.getId())
+		.firstName(member.getFirstName())
+		.lastName(member.getLastName())
+		.password(member.getPassword())
+		.email(member.getEmail())
+		.githubLink(member.getGithubLink())
+		.linkedinLink(member.getGithubLink())
+		.phoneNumber(member.getPhoneNumber())
+		.photo(member.getPhoto())
+		.role(member.getRole())
+		.token(JWTStore.generateToken(member))
+		.build();
+		
+		}
+		
+		throw new BadCredentialsException("Invalid username or password");
+
 	}
 
 	
