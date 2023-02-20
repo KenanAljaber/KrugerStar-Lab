@@ -2,10 +2,14 @@ package com.krugerstarlab.service.tutor;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.krugerstarlab.entity.Member;
-import com.krugerstarlab.entity.Tutor;
+import com.krugerstarlab.dto.LoginResponse;
+import com.krugerstarlab.dto.UserProfile;
+import com.krugerstarlab.entity.member.Member;
+import com.krugerstarlab.entity.tutor.Tutor;
 import com.krugerstarlab.repository.TutorRepository;
 
 @Service
@@ -13,10 +17,13 @@ public class TutorServiceImpl implements TutorService {
 
     private final TutorRepository tutorRepo;
     
+    private PasswordEncoder passwordEncoder;
+    
     
 
-    public TutorServiceImpl(TutorRepository tutorRepo) {
+    public TutorServiceImpl(TutorRepository tutorRepo,PasswordEncoder passwordEncoder) {
         this.tutorRepo = tutorRepo;
+        this.passwordEncoder=passwordEncoder;
     }
 
     @Override
@@ -32,6 +39,7 @@ public class TutorServiceImpl implements TutorService {
 
     @Override
     public Tutor createTutor(Tutor tutor) {
+    	tutor.setPassword(passwordEncoder.encode(tutor.getPassword()));
         return tutorRepo.save(tutor);
     }
 
@@ -59,6 +67,24 @@ public class TutorServiceImpl implements TutorService {
 	public Tutor getTutorByEmail(String email) {
 		 return tutorRepo.findByEmail(email)
 	                .orElse(null);
+	}
+
+	@Override
+	public LoginResponse getTutorProfile(String email) {
+		Tutor tutor = getTutorByEmail(email);
+		UserProfile up = UserProfile.builder()
+				.id(tutor.getId())
+				.firstName(tutor.getFirstName())
+				.lastName(tutor.getLastName())
+				.email(tutor.getEmail())
+				.githubLink(tutor.getGithubLink())
+				.linkedinLink(tutor.getGithubLink())
+				.phoneNumber(tutor.getPhoneNumber())
+				.photo(tutor.getPhoto())
+				.type(tutor.getType()).build();
+		return LoginResponse.builder().status(HttpStatus.OK)
+				.userProfile(up).message("Success")
+				.build();
 	}
 
 	

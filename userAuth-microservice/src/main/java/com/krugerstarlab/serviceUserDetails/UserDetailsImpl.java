@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 
 import com.krugerstarlab.dto.LoginRequest;
 import com.krugerstarlab.dto.TokenDto;
-import com.krugerstarlab.entity.Member;
-import com.krugerstarlab.entity.Tutor;
 import com.krugerstarlab.entity.User;
+import com.krugerstarlab.entity.member.Member;
 import com.krugerstarlab.entity.security_model.SecurityUser;
 import com.krugerstarlab.entity.security_model.UserDetailsRole;
+import com.krugerstarlab.entity.tutor.Tutor;
 import com.krugerstarlab.security.JWTStore;
 import com.krugerstarlab.service.member.MemberService;
 import com.krugerstarlab.service.tutor.TutorService;
@@ -30,11 +30,12 @@ public class UserDetailsImpl implements UserDetailsService {
 	@Lazy
 	private final TutorService tutorService;
 
-
+	private JWTStore jwtStore;
 	
-	public UserDetailsImpl(MemberService memberService, TutorService tutorService) {
+	public UserDetailsImpl(MemberService memberService, TutorService tutorService,JWTStore jwtStore) {
 		this.memeberService = memberService;
 		this.tutorService = tutorService;
+		this.jwtStore=jwtStore;
 	}
 
 	@Override
@@ -59,10 +60,10 @@ public class UserDetailsImpl implements UserDetailsService {
 	
 
 	public TokenDto validate(String token, String role) {
-		if (!JWTStore.validateToken(token)) {
+		if (!jwtStore.validateToken(token)) {
 			return null;
 		}
-		String email = JWTStore.getEmailFromToken(token);
+		String email = jwtStore.getEmailFromToken(token);
 		if (email == null) {
 			return null;
 		}

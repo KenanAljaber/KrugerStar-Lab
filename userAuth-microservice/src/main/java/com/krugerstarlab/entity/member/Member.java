@@ -1,10 +1,7 @@
-package com.krugerstarlab.entity;
+package com.krugerstarlab.entity.member;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.springframework.security.core.GrantedAuthority;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.krugerstarlab.entity.User;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,22 +9,24 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@NoArgsConstructor
+
 public class Member extends User  {
 	
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	
+	 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "group_id")
-	 private Group group;
+	 private Group myGroup;
 
+	public Member() {
+		myGroup=new Group();
+	}
 	
 
 	public Member(String firstName, String lastName, 

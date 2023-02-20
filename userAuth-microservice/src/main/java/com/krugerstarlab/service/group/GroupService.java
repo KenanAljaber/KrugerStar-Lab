@@ -3,7 +3,7 @@ package com.krugerstarlab.service.group;
 
 import java.util.List;
 
-import com.krugerstarlab.entity.Group;
+import com.krugerstarlab.entity.member.Group;
 
 public interface GroupService {
 	

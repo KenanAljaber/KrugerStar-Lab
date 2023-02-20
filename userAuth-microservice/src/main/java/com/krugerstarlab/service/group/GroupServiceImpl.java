@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.krugerstarlab.entity.Group;
-import com.krugerstarlab.entity.Member;
+import com.krugerstarlab.entity.member.Group;
+import com.krugerstarlab.entity.member.Member;
 import com.krugerstarlab.repository.GroupRepository;
 import com.krugerstarlab.repository.MemberRepository;
 
@@ -67,7 +67,8 @@ public class GroupServiceImpl implements GroupService {
 			throw new EntityExistsException("Member already in group");
 		}
 		group.getMembers().add(member);
-		
+		 groupRepository.save(group);
+	        memberRepository.save(member);
 	}
 
 	  
@@ -79,7 +80,9 @@ public class GroupServiceImpl implements GroupService {
             throw new EntityNotFoundException("Member not in group");
         }
         group.getMembers().remove(member);
-        member.setGroup(null);
+        member.setMyGroup(null);
+        groupRepository.save(group);
+        memberRepository.save(member);
     }
 
 }

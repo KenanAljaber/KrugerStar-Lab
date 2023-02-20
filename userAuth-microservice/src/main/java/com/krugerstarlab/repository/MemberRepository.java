@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.krugerstarlab.entity.Member;
+import com.krugerstarlab.entity.member.Member;
 
 
 

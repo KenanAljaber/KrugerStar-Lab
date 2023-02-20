@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -20,24 +21,39 @@ public class SecurityConfig   {
 		return configuerer.getAuthenticationManager();
 	}
 
+	//the bean that spring security will use once the application is running
 	@Bean
 	 SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		
+		//paths taht will be allowed to access without authenticatoin
 		String[] authorizedPaths =new String[]
 				{
 						"/api/v1/members/login",
-						"/api/v1/members/signup"
+						"/api/v1/members/signup",
+						"/api/v1/tutors/login",
+						"/api/v1/tutors/signup"
 				};
 		
 		
 		return http.csrf().disable()
 				.authorizeHttpRequests(auth-> 
-				auth.requestMatchers(null,authorizedPaths).permitAll())
+				//allowing the paths to be accessed without tokens
+				auth.requestMatchers(null,authorizedPaths).permitAll()
+				//if we want to specify paths only accessed by tutors here we can do it 
+				//.requestMatchers("/api/v1/tutors/**").hasAnyAuthority("TUTOR")
+				
+				//the rest of the paths will requier authentication
+				.requestMatchers("/api/v1/**").authenticated()
+				)
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
+				// for paths that need auth the jwtAuthenticationFilter will be called as an implementation 
+				.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 				.build();
-		
-
-//http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+	}
 	
+	@Bean
+	public JwtAuthenticationFilter jwtAuthenticationFilter() {
+		return new JwtAuthenticationFilter();
 	}
 	
 	
