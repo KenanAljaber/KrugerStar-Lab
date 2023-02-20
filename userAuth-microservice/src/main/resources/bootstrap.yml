@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: userAuth-microservice
+  cloud:
+    config:
+      uri: http://localhost:9999
+      
+      
