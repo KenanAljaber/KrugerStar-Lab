@@ -1,34 +1,58 @@
 package com.krugerstarlab.security;
 
+import java.util.Date;
+import java.util.HashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.krugerstarlab.entity.User;
+import com.krugerstarlab.entity.security_model.SecurityUser;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 
 @Component
 public class JWTStore {
 	
-	//@Value("${jwt.secret}")
-	private static  String JWT_SECRET="secret";
+	private static final long TOKEN_DURATION = 86400000; //24 hours in miliseconds
+
+	@Value("${jwt.secret}")
+	private String JWT_SECRET;
+	
+	private static final Logger logger= LoggerFactory.getLogger(JWTStore.class);
 	
 	@Autowired
 	private static PasswordEncoder passwordEncoder;
 	
 	
-	public static String generateToken(User user) {
-		return "NEW_TOKEN";
+	public  String generateToken(Authentication auth) {
+		logger.debug("Generating token ");
+		SecurityUser user= (SecurityUser)auth.getPrincipal();
+		HashMap<String,Object> claims=new HashMap<>();
+		claims.put("id", user.getId());
+		claims.put("role", user.getRole());
+		return Jwts.builder()
+				.setClaims(claims)
+				.setSubject(user.getEmail())
+				.setIssuedAt(new Date())
+				.setExpiration(new Date(new Date().getTime() + TOKEN_DURATION))
+				.signWith(SignatureAlgorithm.HS512, JWT_SECRET)
+				.compact()
+				;
 	}
 	
-	public static boolean validateToken (String token) {
+	public  boolean validateToken (String token) {
 		  try {
+			  logger.debug("Validating token");
 	            Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token);
 	            return true;
 	        } catch (SignatureException e) {
@@ -51,10 +75,13 @@ public class JWTStore {
 	        return false;
 	    }
 	
-	public static String getEmailFromToken(String token) {
+	public  String getEmailFromToken(String token) {
 		try {
+			logger.debug("Extracting email from token");
 		return Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token).getBody().getSubject();
 		}catch (Exception e) {
+			System.out.println("somtheing happend "+e);
+			e.printStackTrace();
 			return null;
 		}
 	}

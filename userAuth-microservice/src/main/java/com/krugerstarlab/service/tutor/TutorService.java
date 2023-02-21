@@ -2,8 +2,9 @@ package com.krugerstarlab.service.tutor;
 
 import java.util.List;
 
-import com.krugerstarlab.entity.Member;
-import com.krugerstarlab.entity.Tutor;
+import com.krugerstarlab.dto.LoginResponse;
+import com.krugerstarlab.entity.member.Member;
+import com.krugerstarlab.entity.tutor.Tutor;
 
 public interface TutorService {
 
@@ -24,5 +25,7 @@ public interface TutorService {
 
 	// Delete a member by ID
 	public void deleteTutorById(Long id);
+
+	public LoginResponse getTutorProfile(String email);
 
 }

@@ -5,7 +5,7 @@ spring:
     config:
       server:
         git:
-          default-label: userAuth
+          default-label: content-microservice
           uri: https://github.com/KenanAljaber/KrugerStar-Lab
           search-paths: config-files
           

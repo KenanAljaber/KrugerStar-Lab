@@ -1,4 +1,4 @@
-package com.krugerstarlab.entity;
+package com.krugerstarlab.entity.member;
 
 public enum Role  {
 	

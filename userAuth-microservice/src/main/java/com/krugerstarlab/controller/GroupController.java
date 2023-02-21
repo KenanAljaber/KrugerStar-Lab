@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.krugerstarlab.entity.Group;
+import com.krugerstarlab.entity.member.Group;
 import com.krugerstarlab.service.group.GroupService;
 
 @RestController

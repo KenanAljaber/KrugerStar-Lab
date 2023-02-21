@@ -1,6 +1,8 @@
 package com.krugerstarlab.dto;
 
-import com.krugerstarlab.entity.Role;
+import org.springframework.http.HttpStatus;
+
+import com.krugerstarlab.entity.member.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,37 +15,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class LoginResponse {
 
+	private UserProfile userProfile;
 
-    private Long id;
+	private HttpStatus status;
 
+	private String message;
 
-    private String firstName;
+	private String token;
 
-
-    private String lastName;
-
-    private String email;
-
- 
-    private String phoneNumber;
-
-
-    private String password;
-
-    private String photo;
-
- 
-    private String githubLink;
-
-
-    private String linkedinLink;
-    
-    private Role role;
-    
-    private String token;
-    
-
-    
-
-	
 }
