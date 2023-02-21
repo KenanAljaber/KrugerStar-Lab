@@ -37,6 +37,23 @@ public class MemberController {
 	@Autowired
 	private AuthenticationService authenticationService;
 
+	
+	
+	@RequestMapping("/blank")
+	public ResponseEntity validate() {
+		/**
+		 * this end point is empty, it will only be called by another microservices to validate 
+		 * the token, this is possible thank to the implementation of OncePerRequestFilter in the 
+		 * JwtAuthenticationFilter that will be called automatically each time a request come to 
+		 * any protected endpoint
+		 */
+		logger.debug("i've been invoked the blank endpoint");
+		try {
+			return new ResponseEntity(HttpStatus.OK);
+		}catch(Exception e) {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+	}
 
 	@PostMapping("/login")
 	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {

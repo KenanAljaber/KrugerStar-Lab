@@ -4,3 +4,7 @@ spring:
     cloud:
         config:
             uri: http://localhost:9999
+logging:
+  level:
+    '[com.netflix.eureka.cluster]': off
+    '[com.netflix.discovery.DiscoveryClient]': off

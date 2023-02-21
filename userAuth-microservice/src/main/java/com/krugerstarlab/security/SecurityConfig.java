@@ -27,10 +27,11 @@ public class SecurityConfig   {
 		//paths taht will be allowed to access without authenticatoin
 		String[] authorizedPaths =new String[]
 				{
-						"/api/v1/members/login",
-						"/api/v1/members/signup",
-						"/api/v1/tutors/login",
-						"/api/v1/tutors/signup"
+						"/api/v1/users/members/login",
+						"/api/v1/users/members/signup",
+						"/api/v1/users/tutors/login",
+						"/api/v1/users/tutors/signup",
+						"/validate/*"
 				};
 		
 		
