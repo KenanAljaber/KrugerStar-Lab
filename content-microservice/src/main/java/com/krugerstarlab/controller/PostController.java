@@ -21,7 +21,7 @@ import com.krugerstarlab.service.Post.PostService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/posts")
+@RequestMapping("/api/v1/content/posts")
 public class PostController {
 
     private final PostService postService;

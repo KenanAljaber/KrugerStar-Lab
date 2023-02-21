@@ -18,7 +18,7 @@ import com.krugerstarlab.entity.member.Group;
 import com.krugerstarlab.service.group.GroupService;
 
 @RestController
-@RequestMapping("/api/v1/groups")
+@RequestMapping("/api/v1/users/groups")
 public class GroupController {
     
     private final GroupService groupService;

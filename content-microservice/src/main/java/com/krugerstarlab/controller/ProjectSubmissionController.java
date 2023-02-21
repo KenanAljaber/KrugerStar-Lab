@@ -17,7 +17,7 @@ import com.krugerstarlab.entity.project.ProjectSubmission;
 import com.krugerstarlab.service.project_submission.ProjectSubmissionService;
 
 @RestController
-@RequestMapping("/project-submissions")
+@RequestMapping("api/v1/content/project-submissions")
 public class ProjectSubmissionController {
 
     private final ProjectSubmissionService projectSubmissionService;

@@ -22,7 +22,7 @@ import ch.qos.logback.classic.Logger;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("api/v1/project-posts")
+@RequestMapping("api/v1/content/project-posts")
 @Validated
 public class ProjectPostController {
 

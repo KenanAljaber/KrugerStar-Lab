@@ -26,7 +26,7 @@ import com.krugerstarlab.service.authentication.AuthenticationService;
 import com.krugerstarlab.service.tutor.TutorService;
 
 @RestController
-@RequestMapping("api/v1/tutors")
+@RequestMapping("api/v1/users/tutors")
 public class TutorController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
