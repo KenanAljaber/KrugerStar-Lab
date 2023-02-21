@@ -8,10 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.krugerstarlab.entity.Comment;
 import com.krugerstarlab.entity.Post;
 import com.krugerstarlab.entity.PostType;
-import com.krugerstarlab.entity.ProjectPost;
+import com.krugerstarlab.entity.comment.Comment;
+import com.krugerstarlab.entity.project.ProjectPost;
 import com.krugerstarlab.repository.PostRepository;
 import com.krugerstarlab.repository.ProjectPostRepository;
 

@@ -2,7 +2,7 @@ package com.krugerstarlab.service.comment;
 
 import java.util.List;
 
-import com.krugerstarlab.entity.Comment;
+import com.krugerstarlab.entity.comment.Comment;
 
 public interface CommentService {
 

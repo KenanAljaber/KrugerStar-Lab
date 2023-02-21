@@ -9,8 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.krugerstarlab.entity.Comment;
-import com.krugerstarlab.entity.ProjectPost;
+import com.krugerstarlab.entity.comment.Comment;
+import com.krugerstarlab.entity.project.ProjectPost;
+import com.krugerstarlab.entity.project.ProjectSubmission;
 import com.krugerstarlab.repository.ProjectPostRepository;
 
 
@@ -68,6 +69,22 @@ public class ProjectPostServiceImpl implements ProjectPostService {
 		ProjectPostRepository.deleteById(projectPostId);
 	}
 
+
+
+
+	@Override
+	public boolean addSubmission(Long projectId,ProjectSubmission submission) {
+		System.out.println("this is service "+projectId);
+		ProjectPost project= this.getProjectPostById(projectId);
+		if(project==null) {
+			return false;
+		}
+		boolean added =project.addSubmission(submission);
+		this.updateProjectPost(projectId, project);
+		return added;
+		
+	}
+
 	
 
 
@@ -77,3 +94,4 @@ public class ProjectPostServiceImpl implements ProjectPostService {
 
 
 }
+;

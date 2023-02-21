@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import org.springframework.data.repository.query.Param;
 
-import com.krugerstarlab.entity.Comment;
 import com.krugerstarlab.entity.Post;
+import com.krugerstarlab.entity.comment.Comment;
 
 public interface PostService {
 

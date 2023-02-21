@@ -2,7 +2,6 @@ package com.krugerstarlab.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.krugerstarlab.entity.ProjectPost;
+import com.krugerstarlab.entity.project.ProjectPost;
+import com.krugerstarlab.entity.project.ProjectSubmission;
 import com.krugerstarlab.service.project_post.ProjectPostService;
 
+import ch.qos.logback.classic.Logger;
 import jakarta.validation.Valid;
 
 @RestController
@@ -65,6 +66,16 @@ public class ProjectPostController {
     public ResponseEntity<Void> deleteProjectPostById(@PathVariable("id") Long id) {
         projectPostService.deleteProjectPostById(id);
         return ResponseEntity.noContent().build();
+    }
+    
+    @PostMapping("/submission/{projectId}")
+    public ResponseEntity<Void> addSubmission(@PathVariable("projectId") Long projectId,@RequestBody ProjectSubmission submission) {
+      try {  boolean added=projectPostService.addSubmission(projectId, submission);
+        
+        return added==true? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();}
+      catch (Exception e) {
+    	  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
     }
 
 }

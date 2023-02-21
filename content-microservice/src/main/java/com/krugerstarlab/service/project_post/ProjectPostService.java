@@ -1,12 +1,9 @@
 package com.krugerstarlab.service.project_post;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.data.repository.query.Param;
-
-import com.krugerstarlab.entity.Post;
-import com.krugerstarlab.entity.ProjectPost;
+import com.krugerstarlab.entity.project.ProjectPost;
+import com.krugerstarlab.entity.project.ProjectSubmission;
 
 public interface ProjectPostService {
 
@@ -24,6 +21,8 @@ public interface ProjectPostService {
 
 	// Delete a ProjectPost by ID
 	public void deleteProjectPostById(Long id);
+	
+	public boolean addSubmission (Long projectId,ProjectSubmission submission);
 	
 
 

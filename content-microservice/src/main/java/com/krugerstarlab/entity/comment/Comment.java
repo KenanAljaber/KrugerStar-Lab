@@ -1,6 +1,8 @@
-package com.krugerstarlab.entity;
+package com.krugerstarlab.entity.comment;
 
 import java.util.Date;
+
+import com.krugerstarlab.entity.Post;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
