@@ -21,8 +21,8 @@ import org.springframework.web.server.ServerWebExchange;
 
 import reactor.core.publisher.Mono;
 
-public class CustomFilter implements GlobalFilter {
-	private static final Logger logger = LoggerFactory.getLogger(GatewayConfig.class);
+public class CustomFilter {
+	/*private static final Logger logger = LoggerFactory.getLogger(GatewayConfig.class);
 
 	@Autowired
 	private WebClient webClient;
@@ -104,6 +104,6 @@ public class CustomFilter implements GlobalFilter {
 		}
 
 		return null;
-	}
+	}*/
 
 }
