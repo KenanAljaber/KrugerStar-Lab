@@ -18,6 +18,7 @@ import com.krugerstarlab.security.JWTStore;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
+	
 
 	private final UserDetailsService userDetailsService;
 	
