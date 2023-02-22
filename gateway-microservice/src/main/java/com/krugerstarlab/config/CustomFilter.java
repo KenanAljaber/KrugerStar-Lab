@@ -21,8 +21,8 @@ import org.springframework.web.server.ServerWebExchange;
 
 import reactor.core.publisher.Mono;
 
-public class CustomFilter {
-	/*private static final Logger logger = LoggerFactory.getLogger(GatewayConfig.class);
+public class CustomFilter implements GlobalFilter {
+	private static final Logger logger = LoggerFactory.getLogger(GatewayConfig.class);
 
 	@Autowired
 	private WebClient webClient;
@@ -44,6 +44,7 @@ public class CustomFilter {
 	            return validateToken(exchange)
 	                    .onErrorMap(e -> new RuntimeException("Token validation failed: " + e.getMessage()))
 	                    .flatMap(resp -> {
+	                    	logger.debug(resp.getStatusCode().toString());
 	                        if (resp.getStatusCode().equals(HttpStatus.OK)) {
 	                            logger.debug("[+] Response entity is all good");
 	                            return chain.filter(exchange);
@@ -64,22 +65,30 @@ public class CustomFilter {
 	}
 
 
-	private Mono<ResponseEntity<Object>> validateToken(ServerWebExchange exchange) {
+	private Mono<ResponseEntity<Void>> validateToken(ServerWebExchange exchange) {
 		logger.debug("request has a token");
 		  // Call the userAuth-microservice using WebClient
 		String token=exchange.getRequest().getHeaders().get("Authorization").get(0);
-	    return webClient.get()
+		return webClient.get().uri("http://localhost:8081/api/v1/users/members/blank")
+				.header(HttpHeaders.AUTHORIZATION, token)
+		.retrieve().toBodilessEntity();
+		
+		
+	    /*return webClient.get()
 	        .uri("http://userAuth-microservice/api/v1/users/members/blank")
 	        .header(HttpHeaders.AUTHORIZATION, token)
 	        .exchange()
 	        .flatMap(response -> {
+	        	logger.error("from the webClinet call this is response "+response);
 	            if (response.statusCode().is2xxSuccessful()) {
 	                return Mono.just(ResponseEntity.ok().build());
 	            } else {
 	                return Mono.just(ResponseEntity.status(response.statusCode()).build());
 	            }
 	        })
-	        .onErrorResume(ex -> Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()));
+	        .onErrorResume(ex -> {
+	        	logger.error("errrfrom the webClinet call this is response "+ex);
+	        return	Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());});*/
 		
 		
 	}
@@ -104,6 +113,6 @@ public class CustomFilter {
 		}
 
 		return null;
-	}*/
+	}
 
 }

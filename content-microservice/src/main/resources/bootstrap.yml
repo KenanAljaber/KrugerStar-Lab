@@ -1,6 +1,6 @@
 spring:
   application:
-    name: content-microservice
+    name: CONTENT-MICROSERVICE
   cloud:
     config:
       uri: http://localhost:9999

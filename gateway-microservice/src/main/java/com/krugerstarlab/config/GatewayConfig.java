@@ -12,11 +12,11 @@ public class GatewayConfig {
 
 
    
-  /* @Bean
+   @Bean
     GlobalFilter globalFilter() {
 	   return new CustomFilter();
    }
-   */
+   
    @LoadBalanced
    @Bean
    public WebClient builder(){
