@@ -22,6 +22,7 @@ public class GatewayConfig {
       return builder.routes()
          .route("registry-microservice", r -> r.path("/")
             .uri("http://localhost:9091"))
+         .route("USERAUTH-MICROSERVICE",r-> r.path("/api/v1/users/**").uri("http://localhost:8081"))
          .build();
    }
    
