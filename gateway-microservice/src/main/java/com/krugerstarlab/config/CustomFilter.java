@@ -69,7 +69,7 @@ public class CustomFilter implements GlobalFilter {
 		  // Call the userAuth-microservice using WebClient
 		String token=exchange.getRequest().getHeaders().get("Authorization").get(0);
 	    return webClient.get()
-	        .uri("http://USERAUTH-MICROSERVICE/api/v1/users/members/blank")
+	        .uri("http://userAuth-microservice/api/v1/users/members/blank")
 	        .header(HttpHeaders.AUTHORIZATION, token)
 	        .exchange()
 	        .flatMap(response -> {
