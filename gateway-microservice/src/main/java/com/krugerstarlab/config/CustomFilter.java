@@ -1,10 +1,7 @@
 package com.krugerstarlab.config;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,23 +11,23 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 
-import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Mono;
 
 public class CustomFilter implements GlobalFilter {
 	private static final Logger logger = LoggerFactory.getLogger(GatewayConfig.class);
 
 	@Autowired
-	private RestTemplate rest;
+	private WebClient webClient;
+	
+	
 
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -44,32 +41,30 @@ public class CustomFilter implements GlobalFilter {
 
 	        if (getToken(exchange.getRequest()) != null) {
 	            // Validate token
-	            try {
-	                ResponseEntity resp = validateToken(exchange);
-
-	                if (resp != null && resp.getStatusCode().equals(HttpStatus.OK)) {
-	                    logger.debug("[+] Response entity is all good ");
-	                    return chain.filter(exchange);
-	                }
-
-	                logger.error("[-]Response entity failed it may be null or the token is not valid");
-
-	                return Mono.error(new RuntimeException("Response entity failed or the token is not valid"));
-	            } catch (Exception e) {
-	                logger.error("[-]The validation has failed");
-
-	                return Mono.error(new RuntimeException("Token validation failed: " + e.getMessage()));
-	            }
+	            return validateToken(exchange)
+	                    .onErrorMap(e -> new RuntimeException("Token validation failed: " + e.getMessage()))
+	                    .flatMap(resp -> {
+	                        if (resp.getStatusCode().equals(HttpStatus.OK)) {
+	                            logger.debug("[+] Response entity is all good");
+	                            return chain.filter(exchange);
+	                        } else {
+	                            logger.error("[-]Response entity failed, status code: {}", resp.getStatusCode());
+	                            return Mono.error(new RuntimeException("Response entity failed"));
+	                        }
+	                    });
+	        } else {
+	            return chain.filter(exchange);
 	        }
+	        
 
-	        throw new RuntimeException("You are not authorized");
+	        
 	    } else {
 	        return chain.filter(exchange);
 	    }
 	}
 
 
-	private ResponseEntity validateToken(ServerWebExchange exchange) {
+	private Mono<ResponseEntity<Object>> validateToken(ServerWebExchange exchange) {
 		logger.debug("request has a token");
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
 		headers.add("Authorization", exchange.getRequest().getHeaders().get("Authorization").get(0));
@@ -77,9 +72,24 @@ public class CustomFilter implements GlobalFilter {
 		body.add("field", "value");
 		logger.debug("[+] this is the headers map " + exchange.getRequest().getHeaders().toSingleValueMap().toString());
 		HttpEntity entity = new HttpEntity(body, headers);
-		ResponseEntity resp = rest.exchange("http://localhost:8081/api/v1/users/members/blank", HttpMethod.GET, entity,
-				ResponseEntity.class);
-		return resp;
+		/*ResponseEntity resp = rest.exchange("http://userAuth-microservice/api/v1/users/members/blank", HttpMethod.GET, entity,
+				ResponseEntity.class);*/
+		  // Call the userAuth-microservice using WebClient
+		String token=exchange.getRequest().getHeaders().get("Authorization").get(0);
+	    return webClient.get()
+	        .uri("http://userAuth-microservice/api/v1/users/members/blank")
+	        .header(HttpHeaders.AUTHORIZATION, token)
+	        .exchange()
+	        .flatMap(response -> {
+	            if (response.statusCode().is2xxSuccessful()) {
+	                return Mono.just(ResponseEntity.ok().build());
+	            } else {
+	                return Mono.just(ResponseEntity.status(response.statusCode()).build());
+	            }
+	        })
+	        .onErrorResume(ex -> Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()));
+		
+		
 	}
 
 	private boolean rquierAuth(String path) {

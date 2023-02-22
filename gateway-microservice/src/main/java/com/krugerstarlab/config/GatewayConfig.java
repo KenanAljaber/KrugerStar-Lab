@@ -3,12 +3,13 @@ package com.krugerstarlab.config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class GatewayConfig {
@@ -29,9 +30,10 @@ public class GatewayConfig {
 	   return new CustomFilter();
    }
    
+   @LoadBalanced
    @Bean
-   RestTemplate restTemplate() {
-	   return new RestTemplate();
+   public WebClient builder(){
+       return WebClient.builder().build();
    }
 
 }
