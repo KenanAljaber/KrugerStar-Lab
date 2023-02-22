@@ -22,7 +22,7 @@ import com.krugerstarlab.service.member.MemberService;
 import com.krugerstarlab.service.tutor.TutorService;
 
 @RestController
-@RequestMapping("api/v1/auth")
+@RequestMapping("api/v1/users/auth")
 public class AuthController {
 	private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 	

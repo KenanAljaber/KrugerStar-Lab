@@ -62,15 +62,15 @@ public class CustomFilter implements GlobalFilter {
 		logger.debug("request has a token");
 		// Call the userAuth-microservice using WebClient
 		String token = exchange.getRequest().getHeaders().get("Authorization").get(0);
-		return webClientBuilder.build().get().uri("lb://USERAUTH-MICROSERVICE/api/v1/auth/validate")
+		return webClientBuilder.build().get().uri("lb://USERAUTH-MICROSERVICE/api/v1/users/auth/validate")
 				.header(HttpHeaders.AUTHORIZATION, token).retrieve().toBodilessEntity();
 	}
 
 	private boolean rquierAuth(String path) {
 		List<String> authorizedPaths = List.of(
 
-				"/api/v1/auth/login",
-				"/api/v1/auth/signup");
+				"/api/v1/users/auth/login",
+				"/api/v1/users/auth/signup");
 
 		return !authorizedPaths.contains(path);
 	}
