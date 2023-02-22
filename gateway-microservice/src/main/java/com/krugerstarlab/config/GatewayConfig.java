@@ -16,11 +16,11 @@ public class GatewayConfig {
     GlobalFilter globalFilter() {
 	   return new CustomFilter();
    }
-   
-   @LoadBalanced
+   //esto es necesario generar el builder del webClient y no el webClient mismo
    @Bean
-   public WebClient builder(){
-       return WebClient.builder().build();
+   @LoadBalanced
+    WebClient.Builder loadBalancedWebClientBuilder() {
+    return WebClient.builder();
    }
 
 }

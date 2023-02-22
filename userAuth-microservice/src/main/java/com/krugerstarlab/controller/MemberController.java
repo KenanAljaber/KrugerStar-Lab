@@ -41,7 +41,6 @@ public class MemberController {
 	
 	@RequestMapping("/blank")
 	public ResponseEntity validate() {
-		System.out.println("ajksdhalksjdhalksjdhalksjdhakljsdhaklsdhalksjdhaklsdhaklshdaklsjdhaklsjdhaklsjdhaklsjdhaklsjsdhakljsdhaklsjsdhakljsdhalkjsdhakjsdhlaksjdhaklsjdhalksjdhaklsjdhaksjddhaklsjdhlaskd");
 		/**
 		 * this end point is empty, it will only be called by another microservices to validate 
 		 * the token, this is possible thank to the implementation of OncePerRequestFilter in the 
