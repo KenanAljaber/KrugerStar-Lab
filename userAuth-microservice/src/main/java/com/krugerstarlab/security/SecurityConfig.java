@@ -27,7 +27,7 @@ public class SecurityConfig   {
 		//paths taht will be allowed to access without authenticatoin
 		String[] authorizedPaths =new String[]
 				{
-						"/api/v1/auth/login",
+						"/api/v1/users/auth/login",
 						"/api/v1/users/members/signup",
 						"/api/v1/users/tutors/signup",
 				};
@@ -40,7 +40,7 @@ public class SecurityConfig   {
 				//if we want to specify paths only accessed by tutors here we can do it 
 				//.requestMatchers("/api/v1/tutors/**").hasAnyAuthority("TUTOR")
 				
-				//the rest of the paths will requier authentication
+				//the rest of the paths will require authentication
 				.requestMatchers("/api/v1/**").authenticated()
 				)
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

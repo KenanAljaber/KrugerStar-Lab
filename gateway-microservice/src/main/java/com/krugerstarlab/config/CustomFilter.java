@@ -27,10 +27,11 @@ public class CustomFilter implements GlobalFilter {
 	@Autowired
 	private WebClient.Builder webClientBuilder;
 
+	//this filter will be called each time a request come to the gateway
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 		logger.warn("Filtering the request in the gateway");
-
+		//get the path of the current request to check whether it is an open or protected path
 		String path = exchange.getRequest().getPath().toString();
 
 		if (rquierAuth(path)) {
@@ -51,7 +52,8 @@ public class CustomFilter implements GlobalFilter {
 							}
 						});
 			} else {
-				return chain.filter(exchange);
+				logger.error("[-] Trying to access a protected path without token");
+				return Mono.error(new RuntimeException("[-] Sorry this path is protected"));
 			}
 		} else {
 			return chain.filter(exchange);

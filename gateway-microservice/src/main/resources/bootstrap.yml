@@ -2,6 +2,15 @@ spring:
   application:
     name: GATEWAY-MICROSERVICE
   cloud:
+    gateway:
+      default-filters: # configurar los global CORS de todas las rutas del gateway
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+      globalcors:
+        cors-configurations: 
+          '[/**]':    #matches all routes in the gateway
+                allowedOrigins: "http://localhost:3000"        
+                allowedHeaders: "*"
+                allowedMethods: "*"
     config:
       uri: http://localhost:9999
       
