@@ -41,10 +41,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 	@Override
 	public String authenticateUser(LoginRequest request) throws InvalidUsernameOrPasswordException {
-		logger.debug("Authenticating the loginRequest");
+		logger.debug("[+] Authenticating the loginRequest email and password");
+
 		try {
+			request.setEmail(request.getEmail().toLowerCase());
 			SecurityUser user=(SecurityUser) userDetailsService.loadUserByUsername(request.getEmail());
-			logger.info(user.getRole().toString());
+			logger.info("[+] User role= "+user.getRole().toString());
 			
 		//validate the password if it matches the provided one
 		//Authentication manager will internally call the userDetailsServiceImpl.loadUserByUserName

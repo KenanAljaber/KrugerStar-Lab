@@ -47,6 +47,8 @@ public class ProjectSubmission {
     private String submissionLink;
 
     private String submissionTitle;
+    
+    private Double grade=0.0;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, updatable = false)
@@ -55,7 +57,8 @@ public class ProjectSubmission {
 
     private String note;
 
-	public ProjectSubmission(Long submitterId, String submissionLink, String submissionTitle, String note) {
+	public ProjectSubmission(Long submitterId, String submissionLink, String submissionTitle,
+			String note) {
 		this.submitterId = submitterId;
 		this.submissionLink = submissionLink;
 		this.submissionTitle = submissionTitle;

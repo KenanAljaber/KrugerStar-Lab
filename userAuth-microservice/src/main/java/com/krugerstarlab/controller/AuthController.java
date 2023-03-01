@@ -59,7 +59,7 @@ public class AuthController {
 		try {
 			// Authenticate user and get token
 			String token = authenticationService.authenticateUser(request);
-			logger.info("Request has been validated and token is generated");
+			logger.info("[+] Request has been validated and token is generated");
 
 			// if it is member log the user as a member if tutor log the user as tutor
 			SecurityUser secUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -76,22 +76,22 @@ public class AuthController {
 			response.setUserRole(secUser.getRole());
 			// Set the token in response
 			response.setToken(token);
-			logger.info("User profile is set and login response is ready ");
+			logger.info("[+] User profile is set and login response is ready ");
 
 			// Set the headers
 			HttpHeaders headers = new HttpHeaders();
 			headers.setBearerAuth(response.getToken());
-			logger.debug("User has been authenticated and everything is OK");
+			logger.debug("[+] User has been authenticated and everything is OK");
 
 			return ResponseEntity.ok().headers(headers).body(response);
 
 		} catch (UsernameNotFoundException e) {
 			e.printStackTrace();
-			logger.error("there was an error and the user could not be authenticated");
+			logger.error("[-] There was an error and the user could not be authenticated");
 			return ResponseEntity.badRequest().body(LoginResponse.builder().status(HttpStatus.BAD_REQUEST)
 					.message("Invalid email or password").build());
 		} catch (InvalidUsernameOrPasswordException e) {
-			logger.error("there was an error and the user could not be authenticated");
+			logger.error("[-] There was an error and the user could not be authenticated");
 			return ResponseEntity.badRequest().body(LoginResponse.builder().status(HttpStatus.BAD_REQUEST)
 					.message("Invalid email or password").build());
 		}

@@ -2,6 +2,7 @@ package com.krugerstarlab.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.krugerstarlab.entity.member.Group;
 import com.krugerstarlab.entity.member.Role;
 import com.krugerstarlab.entity.tutor.TutorType;
 
@@ -43,6 +44,8 @@ public class UserProfile {
     private Role role;
     @JsonInclude(Include.NON_NULL)
     private TutorType type;
+    @JsonInclude(Include.NON_NULL)
+    private Group myGroup;
    
 	
 }

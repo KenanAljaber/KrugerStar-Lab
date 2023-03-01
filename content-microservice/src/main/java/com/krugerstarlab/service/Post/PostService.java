@@ -31,6 +31,7 @@ public interface PostService {
 	 
 	 Post addComment (Comment comment,Long postId);
 	 
+	 
 
 
 

@@ -40,6 +40,7 @@ public class TutorServiceImpl implements TutorService {
     @Override
     public Tutor createTutor(Tutor tutor) {
     	tutor.setPassword(passwordEncoder.encode(tutor.getPassword()));
+    	tutor.setEmail(tutor.getEmail().toLowerCase());
         return tutorRepo.save(tutor);
     }
 

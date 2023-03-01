@@ -27,7 +27,7 @@ public class LoginResponse {
 
 	@JsonInclude(Include.NON_NULL)
 	private String token;
-	
+	@JsonInclude(Include.NON_NULL)
 	private UserDetailsRole userRole;
 
 }

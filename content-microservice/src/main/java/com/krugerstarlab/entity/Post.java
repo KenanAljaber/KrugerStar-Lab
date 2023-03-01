@@ -19,6 +19,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.persistence.Transient;
@@ -36,7 +37,8 @@ import lombok.Data;
 public class Post  {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue(generator  = "post_seq")
+	@SequenceGenerator(name = "post_seq",sequenceName = "post_sequence")
 	private Long id;
 	
 	
@@ -74,6 +76,14 @@ public class Post  {
 	
 	public Post() {
 		comments=new ArrayList<>();
+	}
+	
+	public void addComment(Comment comment) {
+		if(comments==null) {
+			comments=new ArrayList<>();
+		}
+		comment.setPost(this);
+		comments.add(comment);
 	}
 	
 

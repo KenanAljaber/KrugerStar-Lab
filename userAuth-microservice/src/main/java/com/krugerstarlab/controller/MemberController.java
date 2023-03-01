@@ -65,7 +65,7 @@ public class MemberController {
 
 	@GetMapping
 	public ResponseEntity<List<Member>> getAllMembers() {
-		logger.debug("getting all members from database");
+		logger.debug("[+] Getting all members from database");
 		List<Member> members = memberService.getAllMembers();
 		return new ResponseEntity<>(members, HttpStatus.OK);
 	}

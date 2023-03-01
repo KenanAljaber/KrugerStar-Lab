@@ -13,7 +13,10 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -27,7 +30,10 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue("ProjectPost")
 public  class ProjectPost extends Post  {
 
-	
+	@Id
+	@GeneratedValue(generator  = "post_seq")
+	@SequenceGenerator(name = "post_seq",sequenceName = "post_sequence")
+	private Long id;
 	
 	@Column(nullable = false)
     private LocalDate deadline;

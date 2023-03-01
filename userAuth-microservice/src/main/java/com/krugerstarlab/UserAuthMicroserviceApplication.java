@@ -1,5 +1,9 @@
 package com.krugerstarlab;
 	
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,6 +14,8 @@ import com.krugerstarlab.entity.member.Member;
 import com.krugerstarlab.entity.member.Role;
 import com.krugerstarlab.entity.tutor.Tutor;
 import com.krugerstarlab.entity.tutor.TutorType;
+import com.krugerstarlab.seeders.GroupsMembersSeeder;
+import com.krugerstarlab.seeders.MemberGenerator;
 import com.krugerstarlab.service.group.GroupService;
 import com.krugerstarlab.service.member.MemberService;
 import com.krugerstarlab.service.tutor.TutorService;
@@ -20,14 +26,12 @@ import jakarta.annotation.PostConstruct;
 @EnableDiscoveryClient
 public class UserAuthMicroserviceApplication {
 
-	@Autowired
-	private MemberService service;
-	
-	@Autowired
-	private GroupService groupService;
-	
+
 	@Autowired
 	private TutorService tutorService;
+	
+	@Autowired
+	private GroupsMembersSeeder seeder;
 	
 
 	public static void main(String[] args) {
@@ -36,24 +40,15 @@ public class UserAuthMicroserviceApplication {
 	
 	@PostConstruct
 	public void injectData () {
-		//Dummy data to do some tests
-	Member member=new Member("hayan", "aljaber", "test@test.com","0999723294"
-			,"12345678","photo", Role.ROLE_BACKEND_DEV);
-	Member member2=new Member("kenan", "aljaber", "keno12333@hotmail.com","0999723294"
-			,"12345678","photo", Role.ROLE_FULL_STACK);
+
 	
-	Group g=new Group("VengaCoders");
-	
-	Tutor t=new Tutor("kenan", "aljaber", "tutor@test.com", "0999723294", "12345678","photo"
+	Tutor t=new Tutor("Juan", "Sotomayor", "juanseb@kruger.com", "0999723294", "12345678","photo"
 			,TutorType.FRONTEND);
 	tutorService.createTutor(t);
 	
-	g.addMember(member);
-	g.addMember(member2);
-	groupService.createGroup(g);
+	seeder.generateGroups(10);
 	
-	service.createMember(member);
-	service.createMember(member2);
+
 	
 	}
 	

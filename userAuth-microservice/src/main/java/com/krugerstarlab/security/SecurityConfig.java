@@ -34,7 +34,7 @@ public class SecurityConfig   {
 		
 		
 		return http.csrf().disable()
-				.authorizeHttpRequests(auth-> 
+				/*.authorizeHttpRequests(auth-> 
 				//allowing the paths to be accessed without tokens
 				auth.requestMatchers(null,authorizedPaths).permitAll()
 				//if we want to specify paths only accessed by tutors here we can do it 
@@ -42,7 +42,7 @@ public class SecurityConfig   {
 				
 				//the rest of the paths will require authentication
 				.requestMatchers("/api/v1/**").authenticated()
-				)
+				)*/
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 				// for paths that need auth the jwtAuthenticationFilter will be called as an implementation 

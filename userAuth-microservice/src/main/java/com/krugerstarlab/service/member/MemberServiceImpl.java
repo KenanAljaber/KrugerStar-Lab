@@ -22,14 +22,14 @@ public class MemberServiceImpl implements MemberService {
 
 	private PasswordEncoder passwordEncoder;
 	
-	private JWTStore jwtStore;
+
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
-	public MemberServiceImpl(MemberRepository memberRepository,JWTStore jwtStore, PasswordEncoder passwordEncoder) {
+	public MemberServiceImpl(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
 		this.memberRepository = memberRepository;
 		this.passwordEncoder = passwordEncoder;
-		this.jwtStore=jwtStore;
+
 	}
 
 	@Override
@@ -45,6 +45,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member createMember(Member member) {
 		member.setPassword(passwordEncoder.encode(member.getPassword()));
+		member.setEmail(member.getEmail().toLowerCase());
 		return memberRepository.save(member);
 	}
 

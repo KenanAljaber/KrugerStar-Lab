@@ -12,6 +12,9 @@ import org.springframework.security.core.GrantedAuthority;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +22,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class Tutor extends User {
+	
+	@Id
+	@GeneratedValue(generator  = "user_seq")
+	@SequenceGenerator(name = "user_seq",sequenceName = "user_sequence")
+	private Long id;
 	
 	@Enumerated(EnumType.STRING)
 	private TutorType type;

@@ -35,7 +35,7 @@ public class JWTStore {
 	
 	
 	public  String generateToken(Authentication auth) {
-		logger.debug("Generating token ");
+		logger.debug("[+] Generating a token");
 		SecurityUser user= (SecurityUser)auth.getPrincipal();
 		HashMap<String,Object> claims=new HashMap<>();
 		claims.put("id", user.getId());
@@ -52,24 +52,24 @@ public class JWTStore {
 	
 	public  boolean validateToken (String token) {
 		  try {
-			  logger.debug("Validating token");
+			  logger.debug("[+] Validating token");
 	            Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token);
 	            return true;
 	        } catch (SignatureException e) {
 	            // signature verification failed
-	            System.out.println("Invalid JWT signature: " + e.getMessage());
+	            logger.error("[-] Invalid JWT signature: " + e.getMessage());
 	        } catch (MalformedJwtException e) {
 	            // invalid JWT format
-	            System.out.println("Invalid JWT token: " + e.getMessage());
+	            logger.error("[-] Invalid JWT token: " + e.getMessage());
 	        } catch (ExpiredJwtException e) {
 	            // JWT token has expired
-	            System.out.println("JWT token has expired: " + e.getMessage());
+	            logger.error("[-] JWT token has expired: " + e.getMessage());
 	        } catch (UnsupportedJwtException e) {
 	            // unsupported JWT token
-	            System.out.println("JWT token is unsupported: " + e.getMessage());
+	            logger.error("[-] JWT token is unsupported: " + e.getMessage());
 	        } catch (IllegalArgumentException e) {
 	            // empty JWT token
-	            System.out.println("JWT claims string is empty: " + e.getMessage());
+	            logger.error("[-] JWT claims string is empty: " + e.getMessage());
 	        }
 
 	        return false;
@@ -77,10 +77,10 @@ public class JWTStore {
 	
 	public  String getEmailFromToken(String token) {
 		try {
-			logger.debug("Extracting email from token");
+			logger.debug("[+] Extracting email from token");
 		return Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token).getBody().getSubject();
 		}catch (Exception e) {
-			System.out.println("somtheing happend "+e);
+			logger.error("[-] somtheing happend "+e);
 			e.printStackTrace();
 			return null;
 		}
